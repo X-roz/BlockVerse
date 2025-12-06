@@ -1,0 +1,34 @@
+{
+  "name": "utility-hub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@noble/secp256k1": "^3.0.0",
+    "@scure/btc-signer": "^2.0.1",
+    "@solana/web3.js": "^1.98.4",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bech32": "^2.0.0",
+    "bs58check": "^4.0.0",
+    "ethereum-cryptography": "^3.2.0",
+    "ethers": "^6.15.0",
+    "js-sha3": "^0.9.3",
+    "jsonwebtoken": "^9.0.2",
+    "next": "16.0.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/bitcoinjs-lib": "^5.0.4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "baseline-browser-mapping": "^2.8.32",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.5",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
