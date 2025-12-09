@@ -1,5 +1,4 @@
 import { randomBytes } from 'crypto';
-import { keccak256 } from 'ethereum-cryptography/keccak';
 import { secp256k1 } from 'ethereum-cryptography/secp256k1';
 import { NextResponse } from 'next/server';
 

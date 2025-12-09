@@ -5,6 +5,9 @@ import { NextResponse } from 'next/server';
 import { validateBTCAddress } from '../../../utils/validators/btcValidator';
 import { validateETHAddress } from '../../../utils/validators/ethValidator';
 import { validateSolAddress } from '../../../utils/validators/solValidator';
+import { readableETHValidation } from './types/ethereum';
+import { readableBTCValidation } from './types/bitcoin';
+import { readableSOLValidation } from './types/solana';
 
 export async function POST(req: Request) {
   try {
@@ -23,15 +26,18 @@ export async function POST(req: Request) {
     switch (network) {
       case "BTC": {
         const result = validateBTCAddress(address);
-        return NextResponse.json(result);
+        const formatted = readableBTCValidation(result);
+        return NextResponse.json(formatted);
       }
       case "ETH": {
         const ethResult = validateETHAddress(address);
-        return NextResponse.json(ethResult);
+        const formatted = readableETHValidation(ethResult);
+        return NextResponse.json(formatted);
       }
       case "SOL": {
         const solResult = validateSolAddress(address);
-        return NextResponse.json(solResult);
+        const formatted = readableSOLValidation(solResult);
+        return NextResponse.json(formatted);
       }
       default:
         return NextResponse.json({valid: false,reason: " Invalid Network."}, { status: 501 });
