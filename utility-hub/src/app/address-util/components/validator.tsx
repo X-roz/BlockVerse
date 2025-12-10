@@ -37,20 +37,20 @@ export function Validator({ network }: ValidatorProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#d0efec] via-[#b8e0e6] to-[#7fc8c8] border border-[#4e8e8e]/30 rounded-2xl p-8 shadow-xl">
+    <div className="bg-background border border-background rounded-2xl p-8 shadow-xl">
       <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-[#4e8e8e]/20 rounded-xl shadow">
-          <Search className="w-7 h-7 text-[#4e8e8e]" />
+        <div className="p-3 bg-btn-primary/20 rounded-xl shadow">
+          <Search className="w-7 h-7 text-icon-color" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-[#183a3a] drop-shadow">Address Validator</h2>
-          <p className="text-[#4e8e8e] text-base">Verify address formats</p>
+          <h2 className="text-2xl font-bold text-foreground drop-shadow">Address Validator</h2>
+          <p className="text-foreground text-base">Verify address formats</p>
         </div>
       </div>
 
       {/* Input Section */}
       <div className="mb-8">
-        <label className="block text-[#4e8e8e] font-semibold mb-2 text-lg">
+        <label className="block text-foreground font-semibold mb-2 text-lg">
           Enter {network} Address
         </label>
         <div className="relative">
@@ -59,10 +59,10 @@ export function Validator({ network }: ValidatorProps) {
             value={inputAddress}
             onChange={(e) => setInputAddress(e.target.value)}
             placeholder={`Paste ${network} address here...`}
-            className="w-full bg-[#f4f7fa] border-2 border-[#4e8e8e] rounded-xl px-5 py-4 pr-14 focus:outline-none focus:ring-2 focus:ring-[#4e8e8e] font-mono text-lg text-[#183a3a] placeholder:text-[#b8e0e6] shadow"
+            className="w-full bg-background border-2 border-btn-primary rounded-xl px-5 py-4 pr-14 focus:outline-none focus:ring-2 focus:ring-btn-primary font-mono text-lg text-foreground placeholder:text-btn-primary shadow"
             onKeyDown={(e) => e.key === 'Enter' && validateAddress()}
           />
-          <Search className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4e8e8e]" />
+          <Search className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-icon-color" />
         </div>
       </div>
 
@@ -70,16 +70,16 @@ export function Validator({ network }: ValidatorProps) {
       <button
         onClick={validateAddress}
         disabled={!inputAddress.trim() || isValidating}
-        className="w-full bg-[#244747] hover:bg-[#183a3a] disabled:bg-[#447F99]/40 disabled:cursor-not-allowed text-[#fefefe] py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
+        className="w-full bg-btn-primary hover:bg-btn-primary/80 disabled:bg-btn-primary/40 disabled:cursor-not-allowed text-btn-text py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
       >
         {isValidating ? (
           <>
-            <div className="w-5 h-5 border-2 border-[#b8e0e6]/30 border-t-[#4e8e8e] rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-btn-primary/30 border-t-btn-primary rounded-full animate-spin" />
             Validating...
           </>
         ) : (
           <>
-            <CheckCircle2 className="w-5 h-5" />
+            <CheckCircle2 className="w-5 h-5 text-icon-color" />
             Validate Address
           </>
         )}
@@ -89,12 +89,12 @@ export function Validator({ network }: ValidatorProps) {
       {validationResult && (
         <div className="space-y-6">
           <div className={`p-5 rounded-xl border-2 text-lg font-semibold flex items-center gap-3 shadow-lg ${
-            isValid 
-              ? 'bg-[#b8e0e6]/20 border-[#4e8e8e]/50 text-[#183a3a]' 
+            isValid
+              ? 'bg-btn-primary/10 border-btn-primary/50 text-foreground'
               : 'bg-red-200/20 border-red-400/50 text-red-700'
           }`}>
             {isValid ? (
-              <CheckCircle2 className="w-7 h-7 text-[#4e8e8e]" />
+              <CheckCircle2 className="w-7 h-7 text-icon-color" />
             ) : (
               <XCircle className="w-7 h-7 text-red-400" />
             )}
@@ -104,16 +104,16 @@ export function Validator({ network }: ValidatorProps) {
           </div>
 
           {/* Validation Details as plain lines */}
-          <div className="bg-[#f4f7fa] border border-[#b8e0e6] rounded-xl p-5 shadow">
+          <div className="bg-background border border-btn-primary rounded-xl p-5 shadow">
             <div className="space-y-2">
               {Object.values(validationResult)
                 .filter(v => v && typeof v === 'string')
                 .map((value, idx) => (
                   <div key={idx}>
                     <span className={
-                      value && value.startsWith('✓') ? 'text-[#4e8e8e]'
+                      value && value.startsWith('✓') ? 'text-btn-primary'
                       : value && value.startsWith('✗') ? 'text-red-400'
-                      : 'text-[#183a3a]'
+                      : 'text-foreground'
                     }>
                       {value}
                     </span>

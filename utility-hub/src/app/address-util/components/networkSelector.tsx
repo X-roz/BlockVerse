@@ -10,9 +10,9 @@ interface NetworkSelectorProps {
 }
 
 const networks = [
-  { value: "ETH", label: "Ethereum", color: "bg-[#4e8e8e]" }, // driftwood teal
-  { value: "BTC", label: "Bitcoin", color: "bg-[#b8e0e6]" }, // ocean haze
-  { value: "SOL", label: "Solana", color: "bg-[#183a3a]" }, // tidal depths
+  { value: "ETH", label: "Ethereum" },
+  { value: "BTC", label: "Bitcoin" },
+  { value: "SOL", label: "Solana" },
 ];
 
 export function NetworkSelector({
@@ -27,40 +27,23 @@ export function NetworkSelector({
       {/* Trigger */}
       <div
         onClick={() => setOpen(!open)}
-        className="
-          flex items-center justify-between 
-          bg-[#b8e0e6]/40 backdrop-blur-xl 
-          border border-[#316666]/30 rounded-xl px-4 py-2.5
-          shadow-[0_0_20px_rgba(24,58,58,0.15)]
-          hover:bg-[#b8e0e6]/60 cursor-pointer transition-all
-        "
+        className="flex items-center justify-between bg-background backdrop-blur-xl border border-background rounded-xl px-4 py-2.5 shadow cursor-pointer transition-all hover:bg-btn-primary/20"
       >
         <div className="flex items-center gap-3">
-          <div
-            className={`w-3.5 h-3.5 rounded-full ${selected?.color} border border-[#183a3a]/30`}
-          />
-          <span className="text-[#183a3a] font-semibold text-[17px] whitespace-nowrap">
-            {selected?.label} ({selected?.value})  
+          <div className="w-3.5 h-3.5 rounded-full bg-btn-primary border border-background" />
+          <span className="text-foreground font-semibold text-[17px] whitespace-nowrap">
+            {selected?.label} ({selected?.value})
           </span>
         </div>
-
         <ChevronDown
-          className={`w-5 h-5 text-[#4e8e8e] transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`w-5 h-5 text-icon-color transition-transform duration-300 ${open ? "rotate-180" : ""}`}
         />
       </div>
 
       {/* Dropdown Menu */}
       {open && (
         <div
-          className="
-            absolute z-20 w-full mt-2 
-            bg-[#f4f7fa]/95 backdrop-blur-xl
-            border border-[#4e8e8e]/20 rounded-xl
-            shadow-xl
-            animate-in fade-in zoom-in duration-200
-          "
+          className="absolute z-20 w-full mt-2 bg-background/95 backdrop-blur-xl border border-background rounded-xl shadow-xl animate-in fade-in zoom-in duration-200"
         >
           {networks.map((n) => (
             <div
@@ -69,15 +52,9 @@ export function NetworkSelector({
                 onNetworkChange(n.value as Network);
                 setOpen(false);
               }}
-              className="
-                flex items-center gap-3 px-4 py-2.5 
-                text-[#183a3a] text-[16px] cursor-pointer
-                hover:bg-[#b8e0e6]/40 transition-all
-              "
+              className="flex items-center gap-3 px-4 py-2.5 text-foreground text-[16px] cursor-pointer hover:bg-btn-primary/20 transition-all"
             >
-              <div
-                className={`w-3.5 h-3.5 rounded-full ${n.color} border border-[#4e8e8e]/30`}
-              />
+              <div className="w-3.5 h-3.5 rounded-full bg-btn-primary border border-background" />
               {n.label} ({n.value})
             </div>
           ))}
