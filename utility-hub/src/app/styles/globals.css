@@ -3,23 +3,23 @@
 :root {
   --font-size: 16px;
   /* Semantic Color Variables */
-  --background: #FFFFFF;
+  --background: #ffffff;
   --foreground: #1A1A1A;
-  --btn-primary: #D4AF37;
-  --btn-text: #000000;
-  --icon-color: #B8860B;
+  --btn-primary: #31242C;
+  --btn-text: #ffffff;
+  --icon-color: #D4AF37;
+  --card-shadow: 0 0 0 0px #31242C, 0 4px 16px 0 #31242C;
 }
 
 .dark {
   /* Semantic Color Variables for Dark Theme */
-  --background: #1f1d1d;
+  --background: #2e2a2a;
   --foreground: #F8FAFC;
-  --btn-primary: #FFD700;
-  --btn-text: #1e3a8a;
-  --icon-color: #FFD700;
+  --btn-primary: #e9eff5;
+  --btn-text: #000000;
+  --icon-color: #D4AF37;
+  --card-shadow: 0 0 0 0px #F8FAFC, 0 1px 8px 0 #F8FAFC;
 }
-
-
 
 
 
@@ -34,3 +34,8 @@
 html {
   font-size: var(--font-size);
 }
+
+.card-shadow {
+  box-shadow: var(--card-shadow);
+}
+

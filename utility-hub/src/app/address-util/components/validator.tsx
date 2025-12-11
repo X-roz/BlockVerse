@@ -37,7 +37,7 @@ export function Validator({ network }: ValidatorProps) {
   };
 
   return (
-    <div className="bg-background border border-background rounded-2xl p-8 shadow-xl">
+    <div className="bg-background border border-background rounded-2xl p-8 card-shadow">
       <div className="flex items-center gap-4 mb-8">
         <div className="p-3 bg-btn-primary/20 rounded-xl shadow">
           <Search className="w-7 h-7 text-icon-color" />

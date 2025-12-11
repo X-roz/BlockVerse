@@ -11,7 +11,7 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
     const [ethAddress, setEthAddress] = useState('');
     const [ethChecksumAddress, setEthChecksumAddress] = useState('');
     
-    const [copied, setCopied] = useState<'address' | 'key' | 'pubUncompressed' | 'pubCompressed' | 'base58' | 'bech32' | null>(null);
+    const [copied, setCopied] = useState<'address' | 'privatekey' | 'checksumAddress' | 'pubkey' | null>(null);
 
     // Move copyToClipboard above all usages
     const copyToClipboard = (text: string, type: typeof copied) => {
@@ -73,10 +73,10 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
     };
 
     return (
-      <div className="bg-background border border-background rounded-2xl p-8 shadow-xl">
+      <div className="bg-background border border-background rounded-2xl p-8 card-shadow">
         <div className="flex items-center gap-4 mb-8">
-          <div className="p-3 bg-btn-primary/20 rounded-xl shadow">
-            <Wand2 className="w-7 h-7 text-icon-color" />
+            <div className="p-3 bg-btn-primary/20 rounded-xl shadow">
+              <Wand2 className="w-7 h-7" style={{ color: 'var(--icon-color)' }} />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-foreground drop-shadow">ETH Address Generator</h2>
@@ -89,15 +89,29 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
           <div className="flex items-center gap-3 mb-5">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center flex-1">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 text-lg font-bold transition-all ${
-                  ethStep >= s ? 'border-btn-primary bg-background text-foreground' : 'border-btn-primary/30 text-btn-primary bg-background/60'
-                }`}>
+                <div
+                  className={`flex items-center justify-center w-10 h-10 rounded-full border-2 text-lg font-bold transition-all ${
+                    ethStep >= s
+                      ? 'border-btn-primary bg-background text-foreground'
+                      : 'border-btn-primary/30 text-btn-primary bg-background/60'
+                  }`}
+                  style={ethStep >= s ? {
+                    borderColor: 'var(--btn-primary)',
+                    background: 'var(--background)',
+                    color: 'var(--foreground)'
+                  } : {
+                    borderColor: 'rgba(212,175,55,0.3)',
+                    color: 'var(--btn-primary)',
+                    background: 'rgba(245,245,235,0.6)'
+                  }}
+                >
                   {s}
                 </div>
                 {s < 3 && (
-                  <div className={`flex-1 h-1 mx-2 transition-all ${
-                    ethStep > s ? 'bg-btn-primary' : 'bg-btn-primary/30'
-                  }`} />
+                  <div
+                    className={`flex-1 h-1 mx-2 transition-all`}
+                    style={{ background: ethStep > s ? 'var(--btn-primary)' : 'rgba(212,175,55,0.3)' }}
+                  />
                 )}
               </div>
             ))}
@@ -118,41 +132,41 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
         {/* Step 1: Generate Keypair (always visible) */}
         <button
           onClick={generateETHKeypair}
-          className="w-full bg-background border-btn-primary text-foreground py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
+          className="w-full bg-btn-primary hover:bg-btn-primary/80 text-btn-text py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
         >
-          <Wand2 className="w-5 h-5" />
+          <Wand2 className="w-5 h-5" style={{ color: 'var(--icon-color)' }} />
           Generate ETH Keys
         </button>
 
         {/* Show Keypair */}
         {ethStep >= 1 && (
           <div className="space-y-6 mb-8">
-            <div className="w-full bg-background border-2 border-btn-primary rounded-xl px-5 py-4 pr-14 focus:outline-none focus:ring-2 focus:ring-btn-primary font-mono text-lg text-foreground placeholder:text-btn-primary shadow">
+            <div className="bg-background border-2 border-btn-primary rounded-xl p-5 shadow-lg">
               <div className="flex items-center justify-between mb-2">
-                <label className="text-foreground font-semibold text-lg">Private Key</label>
+                <label className="text-btn-primary font-semibold text-lg">Private Key</label>
                 <button
-                  onClick={() => copyToClipboard(ethPrivateKey, 'key')}
-                  className="p-2 hover:bg-btn-primary/40 rounded transition-colors"
+                  onClick={() => copyToClipboard(ethPrivateKey, 'privatekey')}
+                  className="p-2 hover:bg-btn-primary/20 rounded transition-colors"
                 >
-                  {copied === 'key' ? (
-                    <Check className="w-5 h-5 text-btn-primary" />
+                  {copied === 'privatekey' ? (
+                    <Check className="w-5 h-5 text-green-400" />
                   ) : (
                     <Copy className="w-5 h-5 text-btn-primary" />
                   )}
                 </button>
               </div>
               <p className="font-mono text-foreground break-all text-lg">{ethPrivateKey}</p>
-              <p className="text-red-600 mt-2 font-semibold">⚠️ Never share your private key</p>
+              <p className="mt-2 font-semibold text-red-700">⚠️ Never share your private key</p>
             </div>
             <div className="bg-background border-2 border-btn-primary rounded-xl p-5 shadow-lg">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-btn-primary font-semibold text-lg">Public Key</label>
                 <button
-                  onClick={() => copyToClipboard(ethPublicKey, 'pubUncompressed')}
-                  className="p-2 hover:bg-btn-primary/40 rounded transition-colors"
+                  onClick={() => copyToClipboard(ethPublicKey, 'pubkey')}
+                  className="p-2 hover:bg-btn-primary/20 rounded transition-colors"
                 >
-                  {copied === 'pubUncompressed' ? (
-                    <Check className="w-5 h-5 text-btn-primary" />
+                  {copied === 'pubkey' ? (
+                    <Check className="w-5 h-5 text-green-400" />
                   ) : (
                     <Copy className="w-5 h-5 text-btn-primary" />
                   )}
@@ -167,9 +181,9 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
         {ethStep === 1 && ethPublicKey && (
           <button
             onClick={deriveETHAddress}
-            className="w-full bg-[#244747] hover:bg-[#183a3a] text-[#f4f7fa] py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
+            className="w-full bg-btn-primary hover:bg-btn-primary/80 text-btn-text py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
           >
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-5 h-5" style={{ color: 'var(--icon-color)' }}/>
             Generate ETH Address
           </button>
         )}
@@ -185,7 +199,7 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
                   className="p-2 hover:bg-btn-primary/40 rounded transition-colors"
                 >
                   {copied === 'address' ? (
-                    <Check className="w-5 h-5 text-btn-primary" />
+                    <Check className="w-5 h-5  text-green-400" />
                   ) : (
                     <Copy className="w-5 h-5 text-btn-primary" />
                   )}
@@ -200,9 +214,9 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
         {ethStep === 2 && ethAddress && (
           <button
             onClick={applyETHChecksum}
-            className="w-full bg-[#244747] hover:bg-[#183a3a] text-[#f4f7fa] py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
+            className="w-full bg-btn-primary hover:bg-btn-primary/80 text-btn-text py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg font-semibold shadow-lg mb-8"
           >
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-5 h-5" style={{ color: 'var(--icon-color)' }}/>
             Apply EIP-55 Checksum
           </button>
         )}
@@ -214,13 +228,13 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
               <div className="flex items-center justify-between mb-2">
                 <label className="text-btn-primary font-semibold text-lg">Checksummed Address</label>
                 <button
-                  onClick={() => copyToClipboard(ethChecksumAddress, 'address')}
+                  onClick={() => copyToClipboard(ethChecksumAddress, 'checksumAddress')}
                   className="p-2 hover:bg-btn-primary/40 rounded transition-colors"
                 >
-                  {copied === 'address' ? (
-                    <Check className="w-5 h-5 text-btn-primary" />
+                  {copied === 'checksumAddress' ? (
+                    <Check className="w-5 h-5 text-green-400" />
                   ) : (
-                    <Copy className="w-5 h-5 text-btn-primary" />
+                    <Copy className="w-5 h-5" />
                   )}
                 </button>
               </div>
@@ -229,9 +243,9 @@ export function EthereumAG({ network, onGenerate }: AddressGeneratorProps) {
           </div>
         )}
         {/* Static Brief Section */}
-        <div className="mb-6 p-4 bg-background border border-btn-primary/40 rounded-xl shadow text-foreground text-base">
-          <p className="mb-2"><span className="font-semibold text-btn-primary">Key Generation:</span> When you click <span className="font-semibold">Generate ETH Keys</span>, a new private key and public key are created. The private key lets you control your funds, while the public key is used to create your Ethereum address. Never share your private key.</p>
-          <p className="mb-2"><span className="font-semibold text-btn-primary">EIP-55 Checksum:</span> Ethereum addresses are long hexadecimal strings. The EIP-55 proposal introduced a checksum using capital and lowercase letters to help prevent errors when typing or sharing addresses. Applying the checksum makes your address safer and easier to verify.</p>
+        <div className="bg-background border-2 border-btn-primary rounded-xl p-5 shadow-lg">
+          <p className="mb-2"><span className="font-semibold">Key Generation:</span> When you click <span className="font-semibold">Generate ETH Keys</span>, a new private key and public key are created. The private key lets you control your funds, while the public key is used to create your Ethereum address.</p>
+          <p className="mb-2"><span className="font-semibold">EIP-55 Checksum:</span> Ethereum addresses are long hexadecimal strings. The EIP-55 proposal introduced a checksum using capital and lowercase letters to help prevent errors when typing or sharing addresses. Applying the checksum makes your address safer and easier to verify.</p>
         </div>
       </div>
     );
