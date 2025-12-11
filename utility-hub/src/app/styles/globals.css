@@ -1,3 +1,12 @@
+/* Zalando Sans Expanded font-face (add your font files to /public/fonts/ if needed) */
+@font-face {
+  font-family: 'Zalando Sans Expanded';
+  src: url('/fonts/ZalandoSans-Expanded.woff2') format('woff2'),
+       url('/fonts/ZalandoSans-Expanded.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 
 :root {

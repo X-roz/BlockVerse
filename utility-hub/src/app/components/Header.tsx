@@ -12,6 +12,7 @@ export function Header({ dropdown }: HeaderProps) {
           <div className="flex items-center gap-4">
             {/* Avatar for branding */}
             {/* <Avatar src="/logo.svg" alt="KazeX" /> */}
+            <h1 className="text-4xl tracking-tight text-foreground drop-shadow-lg" style={{ fontFamily: 'Zalando Sans Expanded, Arial, sans-serif' }}>KazeX</h1>
             {/* <Badge variant="outline" className="ml-2 text-btn-primary border-btn-primary">v1.0</Badge> */}
           </div>
           <div className="flex items-center gap-4">

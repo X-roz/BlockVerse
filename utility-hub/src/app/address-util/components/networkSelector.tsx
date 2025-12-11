@@ -10,9 +10,9 @@ interface NetworkSelectorProps {
 }
 
 const networks = [
-  { value: "ETH", label: "Ethereum" },
-  { value: "BTC", label: "Bitcoin" },
-  { value: "SOL", label: "Solana" },
+  { value: "ETH", label: "Ethereum", iconColor: "#87F5F5" },
+  { value: "BTC", label: "Bitcoin", iconColor: "orange" },
+  { value: "SOL", label: "Solana", iconColor: "#CBA2EA" },
 ];
 
 export function NetworkSelector({
@@ -30,7 +30,7 @@ export function NetworkSelector({
         className="flex items-center justify-between bg-background backdrop-blur-xl border border-background rounded-xl px-4 py-2.5 shadow cursor-pointer transition-all hover:bg-btn-primary/20"
       >
         <div className="flex items-center gap-3">
-          <div className="w-3.5 h-3.5 rounded-full bg-btn-primary border border-background" />
+          <div className="w-3.5 h-3.5 rounded-full border border-background" style={{ backgroundColor: selected?.iconColor }} />
           <span className="text-foreground font-semibold text-[17px] whitespace-nowrap">
             {selected?.label} ({selected?.value})
           </span>
@@ -54,7 +54,7 @@ export function NetworkSelector({
               }}
               className="flex items-center gap-3 px-4 py-2.5 text-foreground text-[16px] cursor-pointer hover:bg-btn-primary/20 transition-all"
             >
-              <div className="w-3.5 h-3.5 rounded-full bg-btn-primary border border-background" />
+              <div className={`w-3.5 h-3.5 rounded-full border border-background`} style={{ backgroundColor: n.iconColor }} />
               {n.label} ({n.value})
             </div>
           ))}
