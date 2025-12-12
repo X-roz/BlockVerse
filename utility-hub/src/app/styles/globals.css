@@ -1,13 +1,10 @@
-/* Zalando Sans Expanded font-face (add your font files to /public/fonts/ if needed) */
 @font-face {
-  font-family: 'Zalando Sans Expanded';
-  src: url('/fonts/ZalandoSans-Expanded.woff2') format('woff2'),
-       url('/fonts/ZalandoSans-Expanded.woff') format('woff');
+  font-family: 'kalam';
+  src: url('/fonts/Kalam-Bold.ttf') format('truetype');
   font-weight: normal;
-  font-style: normal;
+  font-style: italic;
   font-display: swap;
 }
-
 
 :root {
   --font-size: 16px;
@@ -30,14 +27,20 @@
   --card-shadow: 0 0 0 0px #F8FAFC, 0 1px 8px 0 #F8FAFC;
 }
 
-
-
 /**
  * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
  */
 
 @tailwind base;
 @tailwind components;
+
+/* Zalando Sans Expanded utility class */
+.zalando-sans-expanded {
+  font-family: "Zalando Sans Expanded", Arial, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
 @tailwind utilities;
 
 html {
