@@ -1,31 +1,39 @@
 "use client"
 
-import { useState, Suspense } from 'react';
-import { Selector } from '@/app/components/Selector';
+import { useState } from 'react';
 import { Header } from '@/app/components/Header';
+import { Selector } from '@/app/components/Selector';
+import ShaFamilyPage from './components/sha/ShaFamilyPage';
 
-export type HashAlgorithms = 'SHA' | 'MD5' | 'BLAKE2'; // Add or adjust as needed
+export type ShaAlgorithm = 'sha256' | 'sha512' | 'sha224' | 'sha384';
+export type InputEncoding = 'utf-8' | 'hex' | 'base64';
+export type HashAlgorithms = 'SHA' | 'BLAKE' | 'MD5'; // Add or adjust as needed
 
 export default function HashPlayPage() {
-    const [selectedNetwork, setSelectedNetwork] = useState<HashAlgorithms>('SHA');
-    const hashAlgoOptions = [
-        { value: "SHA", label: "SHA", iconColor: "#87F5F5" },
-        { value: "MD5", label: "MD5", iconColor: "orange" },
-        { value: "BLAKE2", label: "BLAKE2", iconColor: "#CBA2EA" },
+    const [selectedAlgo, setSelectedAlgo] = useState<HashAlgorithms>('SHA');
+    const algorithmOptions = [
+        { value: "SHA", iconColor: "#87F5F5" },
+        { value: "BLAKE", iconColor: "orange" },
+        { value: "MD5", iconColor: "#CBA2EA" },
     ];
-    const selectedOption = hashAlgoOptions.find((n) => n.value === selectedNetwork) || hashAlgoOptions[0];
+    const selectedOption = algorithmOptions.find((n) => n.value === selectedAlgo) || algorithmOptions[0];
+
     return (
-        <div className="min-h-screen bg-background text-foreground">
-            {/* Header */}
-            <Header
+
+         <div className="min-h-screen bg-background text-foreground">
+              {/* Header */}
+              <Header
                 dropdown={
-                    <Selector
-                        selected={selectedOption}
-                        onSelectedChange={(option) => setSelectedNetwork(option.value as HashAlgorithms)}
-                        options={hashAlgoOptions}
-                    />
+                  <Selector
+                    selected={selectedOption}
+                    onSelectedChange={(option) => setSelectedAlgo(option.value as HashAlgorithms)}
+                    options={algorithmOptions}
+                  />
                 }
-            />
+              />
+              {selectedAlgo === 'SHA' && (
+                  <ShaFamilyPage />
+              )}
         </div>
     );
 }

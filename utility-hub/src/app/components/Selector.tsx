@@ -27,7 +27,7 @@ export function Selector<T extends SelectorOption>({
       {/* Trigger */}
       <div
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between bg-background backdrop-blur-xl border border-background rounded-xl px-4 py-2.5 shadow cursor-pointer transition-all hover:bg-btn-primary/20"
+        className="flex items-center justify-between bg-background backdrop-blur-xl border border-background rounded-xl px-4 py-2.5 card-shadow cursor-pointer transition-all hover:bg-btn-primary/20"
       >
         <div className="flex items-center gap-3">
           {selected.iconColor && (

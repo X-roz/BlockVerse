@@ -33,14 +33,6 @@
 
 @tailwind base;
 @tailwind components;
-
-/* Zalando Sans Expanded utility class */
-.zalando-sans-expanded {
-  font-family: "Zalando Sans Expanded", Arial, sans-serif;
-  font-optical-sizing: auto;
-  font-weight: normal;
-  font-style: normal;
-}
 @tailwind utilities;
 
 html {
