@@ -4,16 +4,30 @@ import { useState, Suspense } from 'react';
 import { AddressGenerator } from './components/addressGenerator';
 import { Validator } from './components/validator';
 import { Header } from '@/app/components/Header';
-import { NetworkSelector } from './components/networkSelector';
+import { Selector } from '@/app/components/Selector';
 
 export type Network = 'ETH' | 'BTC' | 'SOL'; // Add or adjust as needed
 
 export default function AddressUtilPage() {
   const [selectedNetwork, setSelectedNetwork] = useState<Network>('ETH');
+  const networkOptions = [
+    { value: "ETH", label: "Ethereum", iconColor: "#87F5F5" },
+    { value: "BTC", label: "Bitcoin", iconColor: "orange" },
+    { value: "SOL", label: "Solana", iconColor: "#CBA2EA" },
+  ];
+  const selectedOption = networkOptions.find((n) => n.value === selectedNetwork) || networkOptions[0];
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <Header dropdown={<NetworkSelector selectedNetwork={selectedNetwork} onNetworkChange={setSelectedNetwork} />} />
+      <Header
+        dropdown={
+          <Selector
+            selected={selectedOption}
+            onSelectedChange={(option) => setSelectedNetwork(option.value as Network)}
+            options={networkOptions}
+          />
+        }
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-10">
@@ -21,7 +35,7 @@ export default function AddressUtilPage() {
           {/* Validator Section */}
           <div className="rounded-2xl shadow-4xl p-8 min-h-[400px] border border-background bg-background">
             <Suspense fallback={<div className="text-center text-foreground">Loading Validator...</div>}>
-              <Validator 
+              <Validator
                 network={selectedNetwork}
                 onValidate={() => {}}
               />
@@ -30,7 +44,7 @@ export default function AddressUtilPage() {
           {/* Address Generator Section */}
           <div className="rounded-2xl shadow-4xl p-8 min-h-[400px] border border-background bg-background">
             <Suspense fallback={<div className="text-center text-foreground">Loading Generator...</div>}>
-              <AddressGenerator 
+              <AddressGenerator
                 network={selectedNetwork}
                 onGenerate={() => {}}
               />
