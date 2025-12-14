@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from 'react';
+import { KeyRound } from 'lucide-react';
 import VerificationSection from './VerificationSection';
+import { Selector } from '@/app/components/Selector';
 
 const shaAlgorithms: { value: ShaAlgorithm; label: string }[] = [
     { value: 'sha256', label: 'SHA-256' },
@@ -18,25 +20,24 @@ const inputEncodings: { value: InputEncoding; label: string }[] = [
 
 export type ShaAlgorithm = 'sha256' | 'sha512' | 'sha224' | 'sha384';
 export type InputEncoding = 'utf-8' | 'hex' | 'base64';
-export type HashAlgorithms = 'SHA' | 'BLAKE' | 'MD5'; // Add or adjust as needed
 
 export default function ShaFamilyPage() {
 
     const [inputText, setInputText] = useState('');
-        const [inputEncoding, setInputEncoding] = useState<InputEncoding>('utf-8');
-        const [algorithm, setAlgorithm] = useState<ShaAlgorithm>('sha256');
-        const [loading, setLoading] = useState(false);
-        const [error, setError] = useState<string | null>(null);
-        const [result, setResult] = useState<null | {
-            hex: string;
-            base64: string;
-            length: { bits: number; hexChars: number; bytes: number };
-            algorithm: string;
-            inputEncoding: string;
-        }>(null);
-        const [copied, setCopied] = useState<{ hex: boolean; base64: boolean }>({ hex: false, base64: false });
-    
-        const handleSubmit = async (e: React.FormEvent) => {
+    const [inputEncoding, setInputEncoding] = useState<InputEncoding>('utf-8');
+    const [algorithm, setAlgorithm] = useState<ShaAlgorithm>('sha256');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [result, setResult] = useState<null | {
+        hex: string;
+        base64: string;
+        length: { bits: number; hexChars: number; bytes: number };
+        algorithm: string;
+        inputEncoding: string;
+    }>(null);
+    const [copied, setCopied] = useState<{ hex: boolean; base64: boolean }>({ hex: false, base64: false });
+
+    const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
             setError(null);
             setResult(null);
@@ -68,15 +69,15 @@ export default function ShaFamilyPage() {
             } finally {
                 setLoading(false);
             }
-        };
-    
-        const handleCopy = (type: 'hex' | 'base64') => {
+    };
+
+    const handleCopy = (type: 'hex' | 'base64') => {
             if (!result) return;
             const value = type === 'hex' ? result.hex : result.base64;
             navigator.clipboard.writeText(value);
             setCopied((prev) => ({ ...prev, [type]: true }));
             setTimeout(() => setCopied((prev) => ({ ...prev, [type]: false })), 1200);
-        };
+    };
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -85,48 +86,58 @@ export default function ShaFamilyPage() {
                 <div className="rounded-2xl card-shadow p-8 mb-8 bg-background border border-background">
                     <form className="flex flex-col gap-4">
                         <div>
-                            <h1 className="text-2xl font-bold text-foreground drop-shadow">SHA-family Hash Playground</h1>
-                            <br />
-                            <label htmlFor="inputText" className="block font-medium mb-1">Input Text</label>
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="p-3 bg-btn-primary/20 rounded-xl shadow">
+                                <KeyRound className="w-7 h-7 text-icon-color" />
+                                </div>
+                                <div>
+                                <h2 className="text-2xl font-bold text-foreground drop-shadow">Secure Hash Algorithms</h2>
+                                <p className="text-foreground text-base">Explore various SHA hashing algorithms</p>
+                                </div>
+                            </div>
+                            <label className="block text-foreground font-semibold mb-2 text-lg">Input Data</label>
                             <textarea
                                 id="inputText"
-                                className="w-full rounded px-2 py-1 font-mono"
+                                className="w-full bg-background border-2 border-btn-primary rounded-xl px-5 py-4 pr-14 focus:outline-none focus:ring-2 focus:ring-btn-primary font-mono text-lg text-foreground placeholder:text-btn-primary shadow"
                                 rows={4}
                                 placeholder="Enter text to hash"
                                 value={inputText}
                                 onChange={e => setInputText(e.target.value)}
                                 aria-required
-                                style={{ border: '1px solid #e5e7eb' }}
+                                style={{
+                                    border: '1px solid var(--btn-primary)',
+                                    background: 'var(--background)',
+                                    color: 'var(--foreground)',
+                                    outline: 'none'
+                                }}
                             />
                         </div>
                         <div className="flex gap-4">
+                            {/* Replace Input Encoding dropdown */}
                             <div className="flex-1">
                                 <label htmlFor="inputEncoding" className="block font-medium mb-1">Input Encoding</label>
-                                <select
-                                    id="inputEncoding"
-                                    className="w-full rounded px-2 py-1"
-                                    value={inputEncoding}
-                                    onChange={e => setInputEncoding(e.target.value as InputEncoding)}
-                                    style={{ border: '1px solid #e5e7eb' }}
-                                >
-                                    {inputEncodings.map(opt => (
-                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                    ))}
-                                </select>
+                                <Selector
+                                    selected={inputEncodings.find(opt => opt.value === inputEncoding) || inputEncodings[0]}
+                                    onSelectedChange={(selected) => setInputEncoding(selected.value as InputEncoding)}
+                                    options={inputEncodings}
+                                    style={{
+                                        boxShadow: 'none', // Remove shadow
+                                        width: '500px', // Increase length towards the right
+                                    }}
+                                />
                             </div>
+                            {/* Replace SHA Algorithm dropdown */}
                             <div className="flex-1">
                                 <label htmlFor="algorithm" className="block font-medium mb-1">SHA Algorithm</label>
-                                <select
-                                    id="algorithm"
-                                    className="w-full rounded px-2 py-1"
-                                    value={algorithm}
-                                    onChange={e => setAlgorithm(e.target.value as ShaAlgorithm)}
-                                    style={{ border: '1px solid #e5e7eb' }}
-                                >
-                                    {shaAlgorithms.map(opt => (
-                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                    ))}
-                                </select>
+                                <Selector
+                                    selected={shaAlgorithms.find(opt => opt.value === algorithm) || shaAlgorithms[0]}
+                                    onSelectedChange={(selected) => setAlgorithm(selected.value as ShaAlgorithm)}
+                                    options={shaAlgorithms}
+                                    style={{
+                                        boxShadow: 'none', // Remove shadow
+                                        width: '500px', // Increase length towards the right
+                                    }}
+                                />
                             </div>
                         </div>
                     </form>
@@ -140,7 +151,11 @@ export default function ShaFamilyPage() {
                             <h2 className="text-lg font-semibold mb-2">Generate SHA Hash</h2>
                             <button
                                 type="submit"
-                                className="bg-blue-600 text-white py-2 rounded font-semibold disabled:opacity-60"
+                                className='w-full bg-background border-2 border-btn-primary rounded-xl px-5 py-2 pr-14 focus:outline-none focus:ring-2 focus:ring-btn-primary font-mono text-lg text-foreground placeholder:text-btn-primary shadow'
+                                style={{
+                                    background: 'var(--btn-primary)',
+                                    color: 'var(--btn-text)'
+                                }}
                                 disabled={loading}
                                 aria-disabled={loading}
                             >
@@ -165,6 +180,7 @@ export default function ShaFamilyPage() {
                                             <button
                                                 type="button"
                                                 className="px-2 py-1 border rounded text-xs"
+                                                style={{ color: 'var(--icon-color)', borderColor: 'var(--icon-color)' }}
                                                 onClick={() => handleCopy('hex')}
                                                 aria-label="Copy hex output"
                                             >
@@ -188,6 +204,7 @@ export default function ShaFamilyPage() {
                                             <button
                                                 type="button"
                                                 className="px-2 py-1 border rounded text-xs"
+                                                style={{ color: 'var(--icon-color)', borderColor: 'var(--icon-color)' }}
                                                 onClick={() => handleCopy('base64')}
                                                 aria-label="Copy base64 output"
                                             >

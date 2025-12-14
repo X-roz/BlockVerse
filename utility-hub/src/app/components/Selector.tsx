@@ -13,17 +13,19 @@ interface SelectorProps<T extends SelectorOption> {
   selected: T;
   onSelectedChange: (selected: T) => void;
   options: T[];
+  style?: React.CSSProperties; // New optional style prop
 }
 
 export function Selector<T extends SelectorOption>({
   selected,
   onSelectedChange,
   options,
+  style, // Destructure the new style prop
 }: SelectorProps<T>) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative w-[200px] select-none">
+    <div className="relative w-[200px] select-none" style={style}>
       {/* Trigger */}
       <div
         onClick={() => setOpen(!open)}

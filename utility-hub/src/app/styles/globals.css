@@ -14,7 +14,7 @@
   --btn-primary: #31242C;
   --btn-text: #ffffff;
   --icon-color: #D4AF37;
-  --card-shadow: 0 0 0 0px #31242C, 0 4px 16px 0 #31242C;
+  --card-shadow: 0 0 0 0px #31242C, 0 4px 8px 0 #31242C;
 }
 
 .dark {
@@ -42,4 +42,5 @@ html {
 .card-shadow {
   box-shadow: var(--card-shadow);
 }
+
 
