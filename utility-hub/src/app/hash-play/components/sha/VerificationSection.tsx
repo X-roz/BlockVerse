@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
-import { InputEncoding, ShaAlgorithm } from "../page";
+import {ShieldCheck} from "lucide-react";
+import { InputEncoding, ShaAlgorithm } from "@/app/hash-play/page";
+import { Selector } from '@/app/components/Selector';
 
 type VerificationSectionProps = {
   inputText: string;
@@ -82,10 +84,22 @@ export default function VerificationSection({ inputText, inputEncoding, algorith
   return (
     <form onSubmit={handleVerify} className="space-y-5">
       <div>
-        <label htmlFor="hashToVerify" className="block font-medium mb-1">Hash to Verify</label>
+        <label htmlFor="hashEncoding" className="block font-medium mb-2 text-foreground">Hash Encoding</label>
+        <Selector
+          selected={hashEncodings.find(opt => opt.value === hashEncoding) || hashEncodings[0]}
+          onSelectedChange={(selected) => setHashEncoding(selected.value as 'Hex' | 'Base64')}
+          options={hashEncodings}
+          style={{
+            width: '600px', 
+          }}
+        />
+        <div className="text-xs text-gray-500 mt-4">This encoding refers only to the hash value, not the input text.</div>
+      </div>
+      <div>
+        <label htmlFor="hashToVerify" className="block font-medium mb-1 text-foreground">Hash to Verify</label>
         <textarea
           id="hashToVerify"
-          className="w-full border rounded px-2 py-1 font-mono"
+          className="w-full border rounded px-2 py-1 font-mono text-foreground"
           rows={2}
           placeholder="Paste the hash value to compare"
           value={hashToVerify}
@@ -93,45 +107,31 @@ export default function VerificationSection({ inputText, inputEncoding, algorith
           aria-required
         />
       </div>
-      <div>
-        <label htmlFor="hashEncoding" className="block font-medium mb-1">Hash Encoding</label>
-        <select
-          id="hashEncoding"
-          className="w-full border rounded px-2 py-1"
-          value={hashEncoding}
-          onChange={e => setHashEncoding(e.target.value as 'Hex' | 'Base64')}
-        >
-          {hashEncodings.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-        <div className="text-xs text-gray-500 mt-1">This encoding refers only to the hash value, not the input text.</div>
-      </div>
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded font-semibold disabled:opacity-60"
+        className="w-full bg-btn-primary text-btn-text py-2 rounded font-semibold disabled:opacity-60"
         disabled={loading}
         aria-disabled={loading}
       >
-        {loading ? 'Verifying...' : 'Verify Hash'}
+        {loading ? 'Verifying...' : <ShieldCheck className="inline-block w-4 h-4 mr-2 text-icon-color" />} Verify Hash
       </button>
       {error && (
         <div className="text-yellow-700 bg-yellow-100 border border-yellow-300 rounded px-2 py-1 text-sm mt-1 flex items-center gap-2">
-          <span role="img" aria-label="warning">⚠️</span> {error}
+          <span className="text-icon-color" role="img" aria-label="warning">⚠️</span> {error}
         </div>
       )}
       {result && (
         <div className="mt-8 space-y-4">
           {result.verified ? (
             <div className="flex items-center gap-2 text-green-700 font-semibold text-base">
-              <span role="img" aria-label="check">✅</span> The generated hash matches the provided hash.
+              <span className="text-icon-color" role="img" aria-label="check">✅</span> The generated hash matches the provided hash.
             </div>
           ) : (
             <div className="flex items-center gap-2 text-red-700 font-semibold text-base">
-              <span role="img" aria-label="cross">❌</span> The generated hash does not match the provided hash.
+              <span className="text-icon-color" role="img" aria-label="cross">❌</span> The generated hash does not match the provided hash.
             </div>
           )}
-          <div className="text-sm text-gray-700 border rounded px-2 py-2 bg-gray-50">
+          <div className="text-sm border rounded px-2 py-2 bg-background text-foreground">
             <div>
               <span className="font-medium">Algorithm:</span> {result.algorithm}
             </div>
@@ -142,11 +142,11 @@ export default function VerificationSection({ inputText, inputEncoding, algorith
             )}
             <div>
               <span className="font-medium">Generated Hash (Hex):</span>
-              <div className="select-all break-all font-mono text-xs bg-white border rounded px-1 py-1 mt-1">{result.generatedHash.hex}</div>
+              <div className="select-all break-all font-mono text-xs bg-background border rounded px-1 py-1 mt-1 text-foreground">{result.generatedHash.hex}</div>
             </div>
             <div>
               <span className="font-medium">Generated Hash (Base64):</span>
-              <div className="select-all break-all font-mono text-xs bg-white border rounded px-1 py-1 mt-1">{result.generatedHash.base64}</div>
+              <div className="select-all break-all font-mono text-xs bg-background border rounded px-1 py-1 mt-1 text-foreground">{result.generatedHash.base64}</div>
             </div>
           </div>
         </div>

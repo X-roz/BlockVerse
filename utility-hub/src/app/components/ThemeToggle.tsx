@@ -24,7 +24,7 @@ export function ThemeToggle() {
       }}
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
-      {resolvedTheme === 'dark' ? '🌙 Dark' : '☀️ Light'}
+      {resolvedTheme === 'dark' ? '🌙' : '☀️'}
     </button>
   );
 }

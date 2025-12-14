@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { KeyRound } from 'lucide-react';
+import { KeyRound, Cog } from 'lucide-react';
 import VerificationSection from './VerificationSection';
 import { Selector } from '@/app/components/Selector';
 
@@ -113,7 +113,7 @@ export default function ShaFamilyPage() {
                             />
                         </div>
                         <div className="flex gap-4">
-                            {/* Replace Input Encoding dropdown */}
+                            {/* Input Encoding dropdown */}
                             <div className="flex-1">
                                 <label htmlFor="inputEncoding" className="block font-medium mb-1">Input Encoding</label>
                                 <Selector
@@ -121,12 +121,12 @@ export default function ShaFamilyPage() {
                                     onSelectedChange={(selected) => setInputEncoding(selected.value as InputEncoding)}
                                     options={inputEncodings}
                                     style={{
-                                        boxShadow: 'none', // Remove shadow
-                                        width: '500px', // Increase length towards the right
+                                        width: '100%', // Make it flexible for mobile screens
+                                        maxWidth: '500px', // Set a maximum width for larger screens
                                     }}
                                 />
                             </div>
-                            {/* Replace SHA Algorithm dropdown */}
+                            {/* SHA Algorithm dropdown */}
                             <div className="flex-1">
                                 <label htmlFor="algorithm" className="block font-medium mb-1">SHA Algorithm</label>
                                 <Selector
@@ -134,8 +134,8 @@ export default function ShaFamilyPage() {
                                     onSelectedChange={(selected) => setAlgorithm(selected.value as ShaAlgorithm)}
                                     options={shaAlgorithms}
                                     style={{
-                                        boxShadow: 'none', // Remove shadow
-                                        width: '500px', // Increase length towards the right
+                                        width: '100%', // Make it flexible for mobile screens
+                                        maxWidth: '500px', // Set a maximum width for larger screens
                                     }}
                                 />
                             </div>
@@ -159,7 +159,7 @@ export default function ShaFamilyPage() {
                                 disabled={loading}
                                 aria-disabled={loading}
                             >
-                                {loading ? 'Hashing...' : 'Generate Hash'}
+                                {loading ? 'Hashing...' : <Cog className="w-5 h-5 inline-block mr-2 text-icon-color" />}Generate Hash
                             </button>
                             {error && <div className="text-red-600 text-sm mt-1">{error}</div>}
                             {result && (
@@ -212,7 +212,7 @@ export default function ShaFamilyPage() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="text-xs text-gray-600 mt-2">
+                                    <div className="text-xs font-semibold mt-2">
                                         {`${shaAlgorithms.find(a => a.value === result?.algorithm)?.label || result?.algorithm?.toUpperCase() || ''} • ${result?.length?.bits ?? ''} bits • ${result?.length?.hexChars ?? ''} hex chars • ${result?.length?.bytes ?? ''} bytes`}
                                     </div>
                                 </div>
