@@ -26,6 +26,15 @@ const decodeInput = (inputText: string, inputEncoding: string): Buffer => {
   }
 };
 
+// Helper function to decode hash
+const decodeHash = (hash: string, hashEncoding: string): Buffer => {
+  try {
+    return Buffer.from(hash, hashEncoding as BufferEncoding);
+  } catch {
+    throw new Error('Invalid hash encoding or malformed hashToVerify.');
+  }
+};
+
 // Helper function to compute hash
 const computeHash = (algorithm: string, inputBuffer: Buffer): Buffer => {
   if (algorithm === 'keccak-256') {
@@ -42,19 +51,30 @@ const computeHash = (algorithm: string, inputBuffer: Buffer): Buffer => {
   return hash.digest();
 };
 
+// Helper function for constant-time comparison
+const constantTimeCompare = (a: Buffer, b: Buffer): boolean => {
+  if (a.length !== b.length) return false;
+  return !a.reduce((acc, byte, idx) => acc | (byte ^ b[idx]), 0);
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { inputText, inputEncoding, algorithm } = body;
+    const { inputText, inputEncoding, algorithm, hashToVerify, hashEncoding } = body;
 
     // Validate required fields
-    if (!inputText || !inputEncoding || !algorithm) {
+    if (!inputText || !inputEncoding || !algorithm || !hashToVerify || !hashEncoding) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
     }
 
     // Validate input encoding
     if (!isValidEncoding(inputEncoding)) {
       return NextResponse.json({ error: 'Invalid input encoding.' }, { status: 400 });
+    }
+
+    // Validate hash encoding
+    if (!isValidEncoding(hashEncoding)) {
+      return NextResponse.json({ error: 'Invalid hash encoding.' }, { status: 400 });
     }
 
     // Validate algorithm
@@ -73,18 +93,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: (error as Error).message }, { status: 400 });
     }
 
+    // Decode hash to verify
+    let hashBuffer;
+    try {
+      hashBuffer = decodeHash(hashToVerify, hashEncoding);
+    } catch (error) {
+      return NextResponse.json({ error: (error as Error).message }, { status: 400 });
+    }
+
     // Compute hash
-    const hashBuffer = computeHash(algorithm, inputBuffer);
+    const generatedHash = computeHash(algorithm, inputBuffer);
+
+    // Verify hash
+    const verified = constantTimeCompare(generatedHash, hashBuffer);
 
     // Prepare response
     const { bits, bytes } = ALGORITHMS[algoKey];
     const response = {
       algorithm,
       context: algorithm === 'keccak-256' ? 'ethereum' : 'standard',
-      inputEncoding,
-      output: {
-        hex: hashBuffer.toString('hex'),
-        base64: hashBuffer.toString('base64'),
+      verified,
+      generatedHash: {
+        hex: generatedHash.toString('hex'),
+        base64: generatedHash.toString('base64'),
       },
       length: {
         bits,

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Header } from '@/app/components/Header';
 import { Selector } from '@/app/components/Selector';
 import Sha2Page from './components/sha/Sha2';
+import Sha3Page from './components/sha/Sha3';
 
 export type HashAlgorithms = 'SHA-2' | 'SHA-3' | 'BLAKE' | 'MD5'; // Add or adjust as needed
 
@@ -32,6 +33,9 @@ export default function HashPlayPage() {
               />
               {selectedAlgo === 'SHA-2' && (
                   <Sha2Page />
+              )}
+              {selectedAlgo === 'SHA-3' && (
+                  <Sha3Page />
               )}
         </div>
     );

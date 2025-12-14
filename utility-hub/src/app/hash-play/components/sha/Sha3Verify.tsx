@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import {ShieldCheck} from "lucide-react";
-import { InputEncoding, Sha2Algorithms } from "@/app/hash-play/components/sha/Sha2";
+import { InputEncoding, Sha3Algorithms } from "@/app/hash-play/components/sha/Sha3";
 import { Selector } from '@/app/components/Selector';
 
 type VerificationSectionProps = {
   inputText: string;
   inputEncoding: InputEncoding;
-  algorithm: Sha2Algorithms;
+  algorithm: Sha3Algorithms;
 };
 
 const hashEncodings = [
@@ -15,7 +15,7 @@ const hashEncodings = [
   { value: 'Base64', label: 'Base64' },
 ];
 
-export default function VerificationSection({ inputText, inputEncoding, algorithm }: VerificationSectionProps) {
+export default function Sha3Verify({ inputText, inputEncoding, algorithm }: VerificationSectionProps) {
   const [hashToVerify, setHashToVerify] = useState("");
   const [hashEncoding, setHashEncoding] = useState<'Hex' | 'Base64'>('Hex');
   const [loading, setLoading] = useState(false);
@@ -30,15 +30,14 @@ export default function VerificationSection({ inputText, inputEncoding, algorith
 
   // Map frontend values to backend-expected values
   const encodingMap: Record<string, string> = {
-    'utf-8': 'UTF-8',
-    'hex': 'Hex',
-    'base64': 'Base64',
+    'utf-8': 'utf-8',
+    'hex': 'hex',
+    'base64': 'base64',
   };
   const algoMap: Record<string, string> = {
-    'sha224': 'SHA-224',
-    'sha256': 'SHA-256',
-    'sha384': 'SHA-384',
-    'sha512': 'SHA-512',
+    'sha3-256': 'sha3-256',
+    'sha3-512': 'sha3-512',
+    'keccak-256': 'keccak-256',
   };
 
   const handleVerify = async (e: React.FormEvent) => {
@@ -55,17 +54,15 @@ export default function VerificationSection({ inputText, inputEncoding, algorith
     }
     setLoading(true);
     try {
-      const res = await fetch('/api/sha-verify', {
+      const res = await fetch('/api/sha3-verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          inputValue: inputText,
-          inputEncoding: encodingMap[inputEncoding],
-          algorithm: algoMap[algorithm],
-          hashToVerify: {
-            value: hashToVerify,
-            encoding: hashEncoding,
-          },
+          inputText,
+          inputEncoding: encodingMap[inputEncoding.toLowerCase()], // Ensure lowercase encoding
+          algorithm: algoMap[algorithm.toLowerCase()],
+          hashToVerify,
+          hashEncoding: hashEncoding.toLowerCase(),
         }),
       });
       const data = await res.json();

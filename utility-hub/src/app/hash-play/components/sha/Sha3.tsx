@@ -2,14 +2,13 @@
 
 import { useState } from 'react';
 import { KeyRound, Cog } from 'lucide-react';
-import VerificationSection from './Sha2Verify';
+import VerificationSection from '@/app/hash-play/components/sha/Sha3Verify';
 import { Selector } from '@/app/components/Selector';
 
-const shaAlgorithms: { value: Sha2Algorithms; label: string }[] = [
-    { value: 'sha256', label: 'SHA-256' },
-    { value: 'sha512', label: 'SHA-512' },
-    { value: 'sha224', label: 'SHA-224' },
-    { value: 'sha384', label: 'SHA-384' },
+const sha3Algorithms: { value: Sha3Algorithms; label: string }[] = [
+    { value: 'SHA3-256', label: 'SHA3-256' },
+    { value: 'SHA3-512', label: 'SHA3-512' },
+    { value: 'Keccak-256', label: 'Keccak-256' },
 ];
 
 const inputEncodings: { value: InputEncoding; label: string }[] = [
@@ -18,14 +17,14 @@ const inputEncodings: { value: InputEncoding; label: string }[] = [
     { value: 'base64', label: 'Base64' },
 ];
 
-export type Sha2Algorithms = 'sha256' | 'sha512' | 'sha224' | 'sha384';
+export type Sha3Algorithms = 'SHA3-256' | 'SHA3-512' | 'Keccak-256';
 export type InputEncoding = 'utf-8' | 'hex' | 'base64';
 
-export default function Sha2Page() {
+export default function Sha3Page() {
 
     const [inputText, setInputText] = useState('');
     const [inputEncoding, setInputEncoding] = useState<InputEncoding>('utf-8');
-    const [algorithm, setAlgorithm] = useState<Sha2Algorithms>('sha256');
+    const [algorithm, setAlgorithm] = useState<Sha3Algorithms>('SHA3-256');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [result, setResult] = useState<null | {
@@ -47,10 +46,14 @@ export default function Sha2Page() {
             }
             setLoading(true);
             try {
-                const res = await fetch('/api/sha-hashing', {
+                const res = await fetch('/api/sha3-hashing', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ inputText, inputEncoding, algorithm }),
+                    body: JSON.stringify({
+                        inputText,
+                        inputEncoding,
+                        algorithm: algorithm.toLowerCase(), // Convert algorithm to lowercase
+                    }),
                 });
                 const data = await res.json();
                 if (!res.ok) {
@@ -91,8 +94,8 @@ export default function Sha2Page() {
                                 <KeyRound className="w-7 h-7 text-icon-color" />
                                 </div>
                                 <div>
-                                <h2 className="text-2xl font-bold text-foreground drop-shadow">Secure Hash Algorithm 2</h2>
-                                <p className="text-foreground text-base">Explore various SHA-2 hashing algorithms</p>
+                                <h2 className="text-2xl font-bold text-foreground drop-shadow">Secure Hash Algorithm 3</h2>
+                                <p className="text-foreground text-base">Explore various SHA-3 hashing algorithms</p>
                                 </div>
                             </div>
                             <label className="block text-foreground font-semibold mb-2 text-lg">Input Data</label>
@@ -128,11 +131,11 @@ export default function Sha2Page() {
                             </div>
                             {/* SHA Algorithm dropdown */}
                             <div className="flex-1">
-                                <label htmlFor="algorithm" className="block font-medium mb-1">SHA-2 Algorithms</label>
+                                <label htmlFor="algorithm" className="block font-medium mb-1">SHA-3 Algorithms</label>
                                 <Selector
-                                    selected={shaAlgorithms.find(opt => opt.value === algorithm) || shaAlgorithms[0]}
-                                    onSelectedChange={(selected) => setAlgorithm(selected.value as Sha2Algorithms)}
-                                    options={shaAlgorithms}
+                                    selected={sha3Algorithms.find(opt => opt.value === algorithm) || sha3Algorithms[0]}
+                                    onSelectedChange={(selected) => setAlgorithm(selected.value as Sha3Algorithms)}
+                                    options={sha3Algorithms}
                                     style={{
                                         width: '100%', // Make it flexible for mobile screens
                                         maxWidth: '500px', // Set a maximum width for larger screens
@@ -148,7 +151,7 @@ export default function Sha2Page() {
                     {/* Generate Hash Card */}
                     <div className="flex-1 rounded-2xl card-shadow p-8 bg-background border border-background min-h-[400px] flex flex-col">
                         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1">
-                            <h2 className="text-lg font-semibold mb-2">Generate SHA Hash</h2>
+                            <h2 className="text-lg font-semibold mb-2">Generate SHA-3 Hash</h2>
                             <button
                                 type="submit"
                                 className='w-full bg-background border-2 border-btn-primary rounded-xl px-5 py-2 pr-14 focus:outline-none focus:ring-2 focus:ring-btn-primary font-mono text-lg text-foreground placeholder:text-btn-primary shadow'
@@ -213,7 +216,7 @@ export default function Sha2Page() {
                                         </div>
                                     </div>
                                     <div className="text-xs font-semibold mt-2">
-                                        {`${shaAlgorithms.find(a => a.value === result?.algorithm)?.label || result?.algorithm?.toUpperCase() || ''} • ${result?.length?.bits ?? ''} bits • ${result?.length?.hexChars ?? ''} hex chars • ${result?.length?.bytes ?? ''} bytes`}
+                                        {`${sha3Algorithms.find(a => a.value === result?.algorithm)?.label || result?.algorithm?.toUpperCase() || ''} • ${result?.length?.bits ?? ''} bits • ${result?.length?.hexChars ?? ''} hex chars • ${result?.length?.bytes ?? ''} bytes`}
                                     </div>
                                 </div>
                             )}
@@ -221,7 +224,7 @@ export default function Sha2Page() {
                     </div>
                     {/* Verify Hash Card */}
                     <div className="flex-1 rounded-2xl card-shadow p-8 bg-background border border-background min-h-[400px] flex flex-col">
-                        <h2 className="text-lg font-semibold mb-2">Verify / Compare SHA-2 Hash</h2>
+                        <h2 className="text-lg font-semibold mb-2">Verify / Compare SHA-3 Hash</h2>
                         <div className="text-xs text-gray-600 mb-4">
                             Recompute the hash using the same input and verify it against a provided hash value.<br />
                             SHA hashes are one-way and cannot be decoded.
