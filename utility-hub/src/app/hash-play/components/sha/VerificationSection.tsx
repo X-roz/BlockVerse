@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import {ShieldCheck} from "lucide-react";
-import { InputEncoding, ShaAlgorithm } from "@/app/hash-play/page";
+import { InputEncoding, Sha2Algorithms } from "@/app/hash-play/components/sha/Sha2";
 import { Selector } from '@/app/components/Selector';
 
 type VerificationSectionProps = {
   inputText: string;
   inputEncoding: InputEncoding;
-  algorithm: ShaAlgorithm;
+  algorithm: Sha2Algorithms;
 };
 
 const hashEncodings = [
