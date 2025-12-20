@@ -11,14 +11,14 @@ export function Header({ dropdown }: HeaderProps) {
         <div className="flex items-center justify-between">
 
           {/* LEFT: Logo + Brand */}
-          <div className="flex items-center gap-4 ml-8">
-            <img
+          <div className="flex items-center gap-4 ml-1">
+            {/* <img
               src="/logo/kazex-icon.png"
               alt="KazeX Logo"
               className="h-20 w-auto drop-shadow-sm"
-            />
+            /> */}
 
-            <div className="flex flex-col leading-tight mt-8"> 
+            <div className="flex flex-col leading-tight mt-4"> 
               <span
                 className="text-4xl font-semibold tracking-tight text-foreground"
                 style={{ fontFamily: 'Kalam' }}
