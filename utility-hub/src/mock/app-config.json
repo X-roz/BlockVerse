@@ -1,35 +1,8 @@
 {
-  "version": "7",
+  "version": "1",
   "last_updated": "2025-11-30T14:20:34.143Z",
-  "site_settings": {
-    "site_title": "Web3 Utility Hub",
-    "site_description": "A collection of tools for developers and learners.",
-    "logo_url": "",
-    "theme": "light"
-  },
-  "home_page": {
-    "hero_title": "Welcome to Web3 Utility Hub",
-    "hero_subtitle": "Your all-in-one toolkit for blockchain utilities.",
-    "announcement": {
-      "enabled": false,
-      "text": "New AI-powered MetaVerse Address Validator coming soon!"
-    }
-  },
-  "features": {},
+  "learnings": {},
   "tools": {},
-  "static_content": {
-    "faq": [
-      {
-        "question": "What is this platform?",
-        "answer": "A collection of Web3 developer and trader tools."
-      },
-      {
-        "question": "Is this free?",
-        "answer": "Yes, all tools are free to use."
-      }
-    ],
-    "footer_text": "© 2025 Web3 MetaVerse Utility Hub. All rights reserved."
-  },
   "admin": {
     "contact_email": "admin@gmail.com"
   }
